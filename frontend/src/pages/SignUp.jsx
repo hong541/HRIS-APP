@@ -24,7 +24,7 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `${import.meta.env.APPLICATION_URL}/api/auth/signup`,
+        `${import.meta.env.APP_URL}/api/auth/signup`,
         formData
       );
       if (res.status === 201) {

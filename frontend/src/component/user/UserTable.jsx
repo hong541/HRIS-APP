@@ -11,7 +11,7 @@ const UserTable = () => {
     const fetchEmployees = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.APPLICATION_URL}/api/user/employees`
+          `${import.meta.env.APPL_URL}/api/user/employees`
         );
         setEmployees(res.data);
       } catch (error) {

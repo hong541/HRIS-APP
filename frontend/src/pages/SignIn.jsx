@@ -20,7 +20,7 @@ const SignIn = () => {
     dispatch(signInStart());
     try {
       const res = await axios.post(
-        `${import.meta.env.APPLICATION_URL}/api/auth/signin`,
+        `${import.meta.env.APP_URL}/api/auth/signin`,
         {
           email,
           password,
