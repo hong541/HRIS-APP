@@ -11,7 +11,7 @@ export const checkInUser = (formData) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:5000/api/checkIn/checkin",
+      `${import.meta.env.APPLICATION_URL}/api/checkIn/checkin`,
       formData,
       config
     );
@@ -35,7 +35,7 @@ export const checkOutUser = (formData) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      "http://localhost:5000/api/checkIn/checkout",
+      `${import.meta.env.APPLICATION_URL}/api/checkIn/checkout`,
       formData,
       config
     );

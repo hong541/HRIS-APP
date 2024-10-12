@@ -19,10 +19,13 @@ const SignIn = () => {
     e.preventDefault();
     dispatch(signInStart());
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/signin", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        `${import.meta.env.APPLICATION_URL}/api/auth/signin`,
+        {
+          email,
+          password,
+        }
+      );
       if (res.status === 200) {
         const data = res.data;
         dispatch(signInSuccess(data));
