@@ -1,6 +1,6 @@
 import Header from "../component/Header";
-import CheckInPage from "../home/CheckIn";
-import CheckoutPage from "../home/CheckOut";
+import CheckInPage from "../component/home/CheckIn";
+import CheckoutPage from "../component/home/CheckOut";
 
 const Home = () => {
   return (

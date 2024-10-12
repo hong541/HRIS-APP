@@ -5,6 +5,7 @@ import cors from "cors";
 import userRoutes from "./routes/user.route.js";
 import authRoutes from "./routes/auth.route.js";
 import checkInRoutes from "./routes/checkIn.route.js";
+import path from "path";
 
 dotenv.config();
 
@@ -19,8 +20,15 @@ mongoose
 
 const app = express();
 
+const _dirname = path.resolve();
+
 app.use(express.json());
-app.use(cors());
+
+const corsOption = {
+  origin: "http://localhost:5173",
+  credential: true,
+};
+app.use(cors(corsOption));
 
 const port = process.env.PORT || 5000;
 
@@ -31,6 +39,11 @@ app.listen(port, () => {
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/checkIn", checkInRoutes);
+
+app.use(express.static(path.join(_dirname, "/frontend/dist")));
+app.get("*", (_, res) => {
+  res.sendFile(path.resolve(_dirname, "frontend", "dist", "index.html"));
+});
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

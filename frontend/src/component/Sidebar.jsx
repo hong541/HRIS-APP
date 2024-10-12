@@ -21,9 +21,7 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await axios.post(
-        `${import.meta.env.APPLICATION_URL}/api/user/signout`
-      );
+      const res = await axios.post("http://localhost:5000/api/user/signout");
       if (res.status === 200) {
         dispatch(signOut());
         localStorage.removeItem("user");

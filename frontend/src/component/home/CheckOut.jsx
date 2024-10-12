@@ -3,20 +3,22 @@ import Webcam from "react-webcam";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { checkInUser } from "../redux/checkin/checkInAction";
+import { checkOutUser } from "../../redux/checkin/checkInAction";
 
-const CheckIn = () => {
+const Checkout = () => {
   const [showWebcam, setShowWebcam] = useState(false);
   const [capturedPhoto, setCapturedPhoto] = useState(null);
-  const [checkInTime, setCheckInTime] = useState(null);
+  const [workedTime, setWorkedTime] = useState(null);
+  const [checkOutTime, setCheckOutTime] = useState(null);
   const [location, setLocation] = useState("Loading...");
-  const [errorMsg, setErrorMsg] = useState(null);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { loading, error } = useSelector((state) => state.checkIn);
+  const { loading, error, checkOutData } = useSelector(
+    (state) => state.checkOut
+  );
 
   useEffect(() => {
     if (showWebcam) {
@@ -85,18 +87,17 @@ const CheckIn = () => {
 
       const watermarkedImage = canvas.toDataURL("image/jpeg");
       setCapturedPhoto({ src: watermarkedImage, watermark });
-      setCheckInTime(`${formattedDate} - ${formattedTime}`);
+      setWorkedTime(formattedTime);
+      setCheckOutTime(`${formattedDate} - ${formattedTime}`);
       setShowWebcam(false);
-
       const formData = new FormData();
       formData.append("photo", dataURItoBlob(watermarkedImage));
       formData.append("location", location);
       const user = JSON.parse(localStorage.getItem("user"));
       formData.append("userId", user._id);
 
-      dispatch(checkInUser(formData)).catch((err) => {
-        setErrorMsg(err.response.data.message);
-      });
+      dispatch(checkOutUser(formData));
+      setShowWebcam(false);
     };
   };
 
@@ -120,8 +121,8 @@ const CheckIn = () => {
     <div className="flex-1 overflow-auto relative z-10">
       <button
         onClick={() => setShowWebcam(true)}
-        className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 mb-4">
-        Check In
+        className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 mb-4">
+        Check Out
       </button>
       {showWebcam && (
         <div className="flex flex-col items-center space-y-4">
@@ -150,11 +151,10 @@ const CheckIn = () => {
 
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
-      {errorMsg && <p className="text-red-500">{errorMsg}</p>}
-      {capturedPhoto && (
+      {checkOutData && (
         <div className="mt-6">
           <img
-            src={capturedPhoto.src}
+            src={capturedPhoto?.src}
             alt="Captured"
             className="w-64 h-auto border-2 border-gray-300"
           />
@@ -164,10 +164,10 @@ const CheckIn = () => {
         </div>
       )}
 
-      {checkInTime && (
+      {workedTime && (
         <div className="mt-6">
           <h2 className="text-xl font-semibold">
-            Check-In Time: {checkInTime}
+            Check-Out Time: {checkOutTime}
           </h2>
         </div>
       )}
@@ -180,4 +180,4 @@ const CheckIn = () => {
   );
 };
 
-export default CheckIn;
+export default Checkout;
